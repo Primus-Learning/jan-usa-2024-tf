@@ -20,7 +20,7 @@ variable "instance_type" {
 
 variable "ami" {
 
-  default = ["ami-00ac45f3035ff009e", "ami-09040d770ffe2224f"]
+  default = "ami-00ac45f3035ff009e"
 }
 
 variable "keyn" {

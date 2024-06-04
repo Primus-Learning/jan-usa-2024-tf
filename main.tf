@@ -87,9 +87,7 @@ resource "aws_route_table_association" "pub-rt-assoc" {
 
 
 resource "aws_instance" "primus-web" {
-
-  for_each                    = toset(var.ami)
-  ami                         = each.key
+  ami                         = var.ami
   instance_type               = var.instance_type
   associate_public_ip_address = true
   availability_zone           = var.av-zone-a
@@ -102,7 +100,7 @@ resource "aws_instance" "primus-web" {
     name = "primus-web"
   }
 
-  depends_on = [ aws_security_group.allow_ssh ]
+  depends_on = [aws_security_group.allow_ssh]
 
 }
 
@@ -111,3 +109,39 @@ resource "aws_key_pair" "pl-keypair" {
   public_key = file(var.pub-key)
 }
 
+
+
+data "aws_ami" "amazon-linux2" {
+
+  most_recent = true
+
+  owners = ["137112412989"]
+
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-kernel-5.10-hvm-*"]
+  }
+
+  filter {
+    name   = "root-device-type"
+    values = ["ebs"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+}
+
+
+resource "aws_instance" "data-ec2" {
+  ami                    = data.aws_ami.amazon-linux2.id
+  key_name               = aws_key_pair.pl-keypair.key_name
+  subnet_id              = aws_subnet.primus-public-subnet.id
+  vpc_security_group_ids = [aws_security_group.allow_ssh.id]
+  instance_type          = var.instance_type
+
+  tags = {
+    Name = "data-ec2"
+  }
+}
