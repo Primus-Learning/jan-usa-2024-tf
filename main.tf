@@ -85,7 +85,7 @@ resource "aws_route_table_association" "pub-rt-assoc" {
   route_table_id = aws_route_table.pub-rt.id
 }
 
-
+# change the ami ID in the variable 
 resource "aws_instance" "primus-web" {
   ami                         = var.ami
   instance_type               = var.instance_type
@@ -103,6 +103,8 @@ resource "aws_instance" "primus-web" {
   depends_on = [aws_security_group.allow_ssh]
 
 }
+
+# you need to change the path to the public
 
 resource "aws_key_pair" "pl-keypair" {
   key_name   = var.keyn
