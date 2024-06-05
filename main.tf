@@ -145,3 +145,19 @@ resource "aws_instance" "data-ec2" {
     Name = "data-ec2"
   }
 }
+
+
+data "aws_vpc" "default" {
+  id = var.default-vpc_id
+}
+
+
+resource "aws_subnet" "data-subnet" {
+  vpc_id            = data.aws_vpc.default.id
+  cidr_block        = "172.31.64.0/20"
+  availability_zone = var.av-zone-c
+
+  tags = {
+    Name = "data-subnet"
+  }
+}

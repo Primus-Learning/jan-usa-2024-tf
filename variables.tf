@@ -58,3 +58,7 @@ variable "region-ami" {
 variable "userdata" {
 
 }
+
+variable "default-vpc_id" {
+
+}
