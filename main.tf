@@ -144,7 +144,7 @@ resource "aws_instance" "data-ec2" {
   instance_type          = var.instance_type
 
   tags = {
-    Name = "data-ec2"
+    Name = "data-ec"
   }
 }
 
